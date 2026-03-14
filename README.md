@@ -116,4 +116,4 @@ This project includes multiple deliverables:
 Krystal Beasley | Sports Analytics Portfolio  
 [LinkedIn](https://www.linkedin.com/in/krystalbeasley/)  
 [GitHub](https://github.com/kbsmd-sportsmusicdata)
-[Email Me](mailto: hey@krystalbcreative.com)
+Email Me: hey@krystalbcreative.com
