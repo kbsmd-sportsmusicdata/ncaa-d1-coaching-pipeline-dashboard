@@ -18,6 +18,10 @@ The analysis is designed as a research-style dashboard for athletic departments,
 
 [View the dashboard](https://kbsmd-sportsmusicdata.github.io/ncaa-d1-coaching-pipeline-dashboard/)
 
+## Dashboard Preview
+
+![Dashboard Preview](dashboard-preview.png)
+
 ## Key Questions
 
 - Are NCAA athlete populations diversifying faster than coaching staffs?
