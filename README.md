@@ -132,6 +132,8 @@ The analysis relies on publicly reported NCAA demographic data and does not capt
 ---
 
 ## Repository Structure
+
+```
 ncaa-d1-coaching-pipeline-dashboard
 │
 ├── index.html                # Interactive dashboard
@@ -146,6 +148,7 @@ ncaa-d1-coaching-pipeline-dashboard
 │
 └── docs
     └── research_brief.pdf
+```
 
 ## Project Deliverables
 
