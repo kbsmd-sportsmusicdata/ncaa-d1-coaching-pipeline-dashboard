@@ -1,12 +1,23 @@
 # NCAA Division I Coaching Pipeline & Demographic Analysis (2012–2025)
 
 Interactive sports analytics dashboard examining demographic representation and leadership pipelines across NCAA Division I coaching.
-_This project is part of a broader sports analytics portfolio focused on leadership trends, competitive analytics, and data-driven decision tools in women's sports._
+_This project is part of a broader [sports analytics portfolio](https://www.notion.so/krystal-beasley/Sports-Analyst-Portfolio-231077fe20b880b381b7f9877bee2021) focused on leadership trends, competitive analytics, and data-driven decision tools in women's sports._
+
+## Dataset Scope
+
+The dataset covers NCAA Division I programs across three sports from 2012–2025.
+
+Combined dataset size:
+
+- 18,563 student-athletes  
+- 3,916 coaches  
+- 13 seasons of longitudinal data
 
 **Sports analyzed:**
-- Women’s Basketball
-- Softball
-- Volleyball  
+- Women’s Basketball 🏀
+- Softball 🥎 
+- Volleyball 🏐
+
 
 This project analyzes the structural pathway from student-athlete → assistant coach → head coach to evaluate whether leadership representation reflects the rapidly diversifying athlete population.
 
