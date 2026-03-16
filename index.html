@@ -6,8 +6,8 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 :root{
   --primary:#2B2A4A;--accent:#E88D67;--bg:#F2F1F6;--white:#fff;
   --border:rgba(43,42,74,.12);
-  --p1:#F97316;--p2:#10B981;--p3:#D4A574;--p4:#F59E0B;--p5:#7E7EB8;
-  --green:#4A7C59;--red:#7C3B6D;
+  --p1:#D4A574;--p2:#1B4965;--p3:#AED9E0;--p4:#2A9D8F;--p5:#7E7EB8;
+  --green:#4A7C59;--red:#E05252;
 }
 /* ── HEADER ── */
 .header{background:var(--primary);padding:18px 40px;display:flex;align-items:center;justify-content:space-between}
@@ -20,9 +20,9 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 .filter-label{font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
 .sport-btn{border:1.5px solid var(--border);background:#fff;color:var(--primary);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;cursor:pointer;transition:all .15s}
 .sport-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.sport-btn.wbb.active{background:var(--p1);border-color:var(--p1)}
-.sport-btn.sft.active{background:var(--p2);border-color:var(--p2)}
-.sport-btn.vbl.active{background:var(--p4);border-color:var(--p4)}
+.sport-btn.wbb.active{background:var(--p1);border-color:var(--p1);color:var(--primary)}
+.sport-btn.sft.active{background:var(--p2);border-color:var(--p2);color:#fff}
+.sport-btn.vbl.active{background:var(--p4);border-color:var(--p4);color:#fff}
 .cb-wrap{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;font-weight:500}
 .cb-wrap input[type=checkbox]{accent-color:var(--accent);width:13px;height:13px;cursor:pointer}
 .yr-inputs{display:flex;align-items:center;gap:6px}
@@ -30,9 +30,14 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 .filter-sep{width:1px;height:28px;background:var(--border)}
 /* ── TAB NAV ── */
 .tab-nav{background:#fff;border-bottom:2px solid var(--border);padding:0 40px;display:flex;gap:4px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(43,42,74,.08)}
-.nav-btn{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:#6C757D;background:none;border:none;border-bottom:3px solid transparent;padding:11px 16px;cursor:pointer;transition:all .15s;margin-bottom:-2px}
-.nav-btn:hover{color:var(--primary)}
-.nav-btn.active{color:var(--primary);border-bottom-color:var(--accent)}
+.nav-btn{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:#6C757D;background:none;border:none;border-bottom:3px solid transparent;padding:9px 16px;cursor:pointer;transition:all .15s;margin-bottom:-2px;border-radius:8px 8px 0 0}
+.nav-btn:hover{color:var(--primary);background:rgba(43,42,74,.05)}
+/* All active tabs: filled chip — one consistent style */
+.nav-btn.active{border-bottom-color:transparent}
+.nav-btn[data-tab="overview"].active,.nav-btn[data-tab="dictionary"].active{background:var(--primary);color:#fff}
+.nav-btn[data-tab="wbb"].active{background:#D4A574;color:var(--primary)}
+.nav-btn[data-tab="softball"].active{background:#1B4965;color:#fff}
+.nav-btn[data-tab="volleyball"].active{background:#2A9D8F;color:#fff}
 /* ── MAIN ── */
 .main{max-width:1400px;margin:0 auto;padding:28px 40px}
 .section{display:none}.section.active{display:block;margin-top:16px}
@@ -54,8 +59,8 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 .kpi-label{font-size:11px;font-weight:700;color:#6C757D;margin-top:4px;text-transform:uppercase;letter-spacing:.3px}
 .kpi-sub{font-size:10px;color:#9CA3AF;margin-top:2px}
 .kpi-delta{font-size:11px;font-weight:600;margin-top:6px;letter-spacing:.1px}
-.kpi-delta.up{color:#4A7C59}.kpi-delta.down{color:#7C3B6D}
-.kpi-arrow{font-size:15px;font-weight:900;line-height:1}
+.kpi-delta.up{color:#4A7C59}.kpi-delta.down{color:#F87171}
+.kpi-arrow{font-size:18px;font-weight:900;line-height:1;vertical-align:-2px}
 /* ── INFO ICON / SDI TOOLTIP ── */
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;color:#9CA3AF;font-size:13px;font-weight:400;cursor:help;margin-left:4px;vertical-align:middle;position:relative;flex-shrink:0;line-height:1;background:transparent}
 .info-icon:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#2B2A4A;color:#fff;font-size:10px;line-height:1.6;padding:10px 14px;border-radius:10px;white-space:pre-line;min-width:230px;max-width:260px;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,.35);font-weight:400;font-family:'Montserrat',sans-serif;pointer-events:none;text-align:left}
@@ -79,7 +84,7 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 .disp-note{font-size:10px;color:#9CA3AF;margin-top:9px;font-style:italic}
 .disp-note strong{color:#F87171;font-style:normal}
 /* ── SPORT INTERPRETATION ── */
-.sport-interp{font-size:11px;color:#6C757D;background:#F8F7FC;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:8px 14px;margin-bottom:18px;line-height:1.6}
+.sport-interp{font-size:11px;color:#6C757D;background:#F8F7FC;border-left:3px solid var(--accent);border-radius:14px;padding:10px 16px;margin-bottom:18px;line-height:1.6}
 .sport-interp strong{color:var(--primary)}
 @media(max-width:900px){.kpi-strip-4{grid-template-columns:repeat(2,1fr)}}
 /* ── INSIGHT BOXES ── */
@@ -90,7 +95,7 @@ body{font-family:'Montserrat',sans-serif;background:#F2F1F6;color:#2B2A4A;font-s
 .insight h4 .ei{font-style:normal;font-size:17px;flex-shrink:0;margin-top:1px}
 .insight p{font-size:11px;line-height:1.65;color:#444}
 .insight .gap-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-top:6px}
-.gap-pill.red{background:#F5E0EF;color:var(--red)}
+.gap-pill.red{background:#FEE2E2;color:var(--red)}
 .gap-pill.green{background:#EBF5EE;color:var(--green)}
 /* ── HEATMAP ── */
 .heatmap-wrap{overflow-x:auto;margin-top:4px}
@@ -119,7 +124,7 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);font-size:10px;text-
 </head><body>
 <div class="header">
   <div class="header-left">
-    <h1>NCAA D-I Coaching Pipeline &amp; Demographic Analysis</h1>
+    <h1>NCAA D1 Coaching Pipeline &amp; Demographic Analysis</h1>
     <p>Women&#8217;s Basketball &bull; Softball &bull; Volleyball &bull; 2012&ndash;2025 &bull; Division I</p>
   </div>
   <div class="header-badge">&#128202; Demographic Intelligence</div>
@@ -147,9 +152,9 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);font-size:10px;text-
   <div class="filter-sep"></div>
   <div class="filter-group">
     <span class="filter-label">Role</span>
-    <label class="cb-wrap"><input type="checkbox" value="Student-Athlete" checked onchange="updateFilters()"><span class="role-dot" style="background:#3B82F6"></span> Athlete</label>
-    <label class="cb-wrap"><input type="checkbox" value="Assistant Coach" checked onchange="updateFilters()"><span class="role-dot" style="background:#06B6D4"></span> Asst Coach</label>
-    <label class="cb-wrap"><input type="checkbox" value="Head Coach" checked onchange="updateFilters()"><span class="role-dot" style="background:#7C3AED"></span> Head Coach</label>
+    <label class="cb-wrap"><input type="checkbox" value="Student-Athlete" checked onchange="updateFilters()"><span class="role-dot" style="background:#AED9E0"></span> Athlete</label>
+    <label class="cb-wrap"><input type="checkbox" value="Assistant Coach" checked onchange="updateFilters()"><span class="role-dot" style="background:#4A6FA5"></span> Asst Coach</label>
+    <label class="cb-wrap"><input type="checkbox" value="Head Coach" checked onchange="updateFilters()"><span class="role-dot" style="background:#2D4057"></span> Head Coach</label>
   </div>
   <div class="filter-sep"></div>
   <div class="filter-group">
@@ -164,11 +169,11 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);font-size:10px;text-
 
 <!-- TAB NAV -->
 <div class="tab-nav">
-  <button class="nav-btn active" onclick="showTab('overview',this)">&#128202; Overview</button>
-  <button class="nav-btn" onclick="showTab('wbb',this)">&#127936; Women&#8217;s Basketball</button>
-  <button class="nav-btn" onclick="showTab('softball',this)">&#129358; Softball</button>
-  <button class="nav-btn" onclick="showTab('volleyball',this)">&#127952; Volleyball</button>
-  <button class="nav-btn" onclick="showTab('dictionary',this)">&#128218; Metrics &amp; Definitions</button>
+  <button class="nav-btn active" data-tab="overview" onclick="showTab('overview',this)">&#128202; Overview</button>
+  <button class="nav-btn" data-tab="wbb" onclick="showTab('wbb',this)">&#127936; Women&#8217;s Basketball</button>
+  <button class="nav-btn" data-tab="softball" onclick="showTab('softball',this)">&#129358; Softball</button>
+  <button class="nav-btn" data-tab="volleyball" onclick="showTab('volleyball',this)">&#127952; Volleyball</button>
+  <button class="nav-btn" data-tab="dictionary" onclick="showTab('dictionary',this)">&#128218; Metrics &amp; Definitions</button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -181,7 +186,7 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);font-size:10px;text-
       <p>NCAA Division I &bull; WBB, Softball &amp; Volleyball combined &bull; 2012&ndash;2025</p>
     </div>
 
-    <div class="kpi-strip-4"><div class="kpi-card" style="border-left-color:#3B82F6"><div class="kpi-val">0.627</div><div class="kpi-label">Athlete Diversity (SDI)<span class="info-icon" data-tip="Simpson Diversity Index (SDI)&#10;&#10;Measures the probability that two randomly selected individuals belong to different demographic groups.&#10;&#10;Range: 0 – 1&#10;&#10;Higher values = greater diversity">&#9432;</span></div><div class="kpi-sub">Simpson Diversity Index &mdash; all sports</div><div class="kpi-delta up">+26% since 2012</div></div><div class="kpi-card" style="border-left-color:#7C3AED"><div class="kpi-val">0.466</div><div class="kpi-label">Coach Diversity (SDI)<span class="info-icon" data-tip="Simpson Diversity Index (SDI)&#10;&#10;Measures the probability that two randomly selected individuals belong to different demographic groups.&#10;&#10;Range: 0 – 1&#10;&#10;Higher values = greater diversity">&#9432;</span></div><div class="kpi-sub">SDI across all coaching roles</div><div class="kpi-delta up">+31% since 2012</div></div><div class="kpi-card"><div class="kpi-val">+13.4pp</div><div class="kpi-label">Avg Coach&ndash;Athlete Gap</div><div class="kpi-sub">White coach overrepresentation vs. athletes</div><div class="kpi-delta down">Latest year &bull; all 3 sports</div></div><div class="kpi-card"><div class="kpi-val">-4.3pp</div><div class="kpi-label">Promotion Gap (Black Women)</div><div class="kpi-sub">Assistant &rarr; Head Coach, latest year</div><div class="kpi-delta down">Negative = underrepresented at HC level</div></div></div><p class="kpi-orient">Key system indicators across all three sports (2012–2025). Filters above allow exploration by sport, role, race, and year.</p>
+    <div class="kpi-strip-4"><div class="kpi-card" style="border-left-color:#AED9E0"><div class="kpi-val">0.627</div><div class="kpi-label">Athlete Diversity (SDI)<span class="info-icon" data-tip="Simpson Diversity Index (SDI)&#10;&#10;Measures the probability that two randomly selected individuals belong to different demographic groups.&#10;&#10;Range: 0 – 1&#10;&#10;Higher values = greater diversity">&#9432;</span></div><div class="kpi-sub">Simpson Diversity Index &mdash; all sports</div><div class="kpi-delta up">+26% since 2012</div></div><div class="kpi-card" style="border-left-color:#2D4057"><div class="kpi-val">0.466</div><div class="kpi-label">Coach Diversity (SDI)<span class="info-icon" data-tip="Simpson Diversity Index (SDI)&#10;&#10;Measures the probability that two randomly selected individuals belong to different demographic groups.&#10;&#10;Range: 0 – 1&#10;&#10;Higher values = greater diversity">&#9432;</span></div><div class="kpi-sub">SDI across all coaching roles</div><div class="kpi-delta up">+31% since 2012</div></div><div class="kpi-card"><div class="kpi-val">+13.4pp</div><div class="kpi-label">Avg Coach&ndash;Athlete Gap</div><div class="kpi-sub">White coach overrepresentation vs. athletes</div><div class="kpi-delta down">Latest year &bull; all 3 sports</div></div><div class="kpi-card"><div class="kpi-val">-4.3pp</div><div class="kpi-label">Promotion Gap (Black Women)</div><div class="kpi-sub">Assistant &rarr; Head Coach, latest year</div><div class="kpi-delta down">Negative = underrepresented at HC level</div></div></div><p class="kpi-orient">Key system indicators across all three sports (2012–2025). Filters above allow exploration by sport, role, race, and year.</p>
 
     <!-- INSIGHT STRIP -->
     <div class="insight-grid">
@@ -421,7 +426,7 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);font-size:10px;text-
 
 </div><!-- /.main -->
 <footer>
-  Source: NCAA Demographics Database (2011&ndash;12 to 2024&ndash;25) &bull; Published September 2025. NCAA.org
+  Data source: NCAA Demographics Database, 2011&ndash;12 to 2024&ndash;25, published September 2025 on NCAA.org
 </footer>
 <div id="hmTooltip"></div>
 
@@ -440,10 +445,10 @@ var PEAK_JUMP   = {"WBB": 2024, "Softball": 2016, "Volleyball": 2025};
 var MK_DATA     = {"WBB": {"White": {"trend": "decreasing", "p": 0.9128, "sig": false}, "Black/AA": {"trend": "increasing", "p": 0.1253, "sig": false}, "Hispanic/Latino": {"trend": "decreasing", "p": 0.0285, "sig": true}, "Asian": {"trend": "increasing", "p": 0.6614, "sig": false}, "International": {"trend": "decreasing", "p": 0.0798, "sig": false}, "Two or More": {"trend": "decreasing", "p": 0.0022, "sig": true}}, "Softball": {"White": {"trend": "increasing", "p": 0.0052, "sig": true}, "Black/AA": {"trend": "decreasing", "p": 0.4434, "sig": false}, "Hispanic/Latino": {"trend": "decreasing", "p": 0.0052, "sig": true}, "Asian": {"trend": "increasing", "p": 0.3244, "sig": false}, "International": {"trend": "increasing", "p": 0.3244, "sig": false}, "Two or More": {"trend": "decreasing", "p": 0.0798, "sig": false}}, "Volleyball": {"White": {"trend": "decreasing", "p": 0.5841, "sig": false}, "Black/AA": {"trend": "decreasing", "p": 0.0285, "sig": true}, "Hispanic/Latino": {"trend": "decreasing", "p": 0.0375, "sig": true}, "Asian": {"trend": "increasing", "p": 0.0052, "sig": true}, "International": {"trend": "increasing", "p": 0.1889, "sig": false}, "Two or More": {"trend": "increasing", "p": 0.0798, "sig": false}}};
 
 var SPORTS_ALL  = ['WBB','Softball','Volleyball'];
-var SPORT_COLORS= {WBB:'#F97316',Softball:'#10B981',Volleyball:'#F59E0B'};
-var RACE_COLORS = {'White':'#D4A574','Black/AA':'#5D5C9C','Hispanic/Latino':'#E88D67',
+var SPORT_COLORS= {WBB:'#D4A574',Softball:'#1B4965',Volleyball:'#2A9D8F'};
+var RACE_COLORS = {'White':'#F4C89A','Black/AA':'#5D5C9C','Hispanic/Latino':'#E88D67',
                    'Asian':'#5B9AA9','International':'#7E7EB8','Two or More':'#4A7C59'};
-var ROLE_COLORS = {'Student-Athlete':'#3B82F6','Assistant Coach':'#06B6D4','Head Coach':'#7C3AED'};
+var ROLE_COLORS = {'Student-Athlete':'#AED9E0','Assistant Coach':'#4A6FA5','Head Coach':'#2D4057'};
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 var state = {sports:['WBB','Softball','Volleyball'],yearMin:2012,yearMax:2025};
@@ -512,14 +517,16 @@ function makeChart(id,cfg){
 // ── HEATMAP COLOR INTERPOLATOR ────────────────────────────────────────────────
 // Sequential palette: Low #DBEAFE → Mid #60A5FA → High #1D4ED8
 function hmColor(intensity){
+  // Stat Leader blues: #87CEEB → #5AA9D6 → #3682BA → #0D3B66
   var stops=[
-    {r:219,g:234,b:254}, // #DBEAFE (low)
-    {r:96, g:165,b:250}, // #60A5FA (mid)
-    {r:29, g:78, b:216}  // #1D4ED8 (high)
+    {r:0x87,g:0xCE,b:0xEB}, // #87CEEB — light sky (low)
+    {r:0x5A,g:0xA9,b:0xD6}, // #5AA9D6 — medium-light
+    {r:0x36,g:0x82,b:0xBA}, // #3682BA — medium
+    {r:0x0D,g:0x3B,b:0x66}  // #0D3B66 — dark navy (high)
   ];
   intensity=Math.max(0,Math.min(1,intensity));
-  var t=intensity*2;
-  var i=t>=2?1:Math.floor(t);
+  var t=intensity*(stops.length-1);
+  var i=Math.min(Math.floor(t),stops.length-2);
   var f=t-i;
   var c0=stops[i],c1=stops[i+1];
   return 'rgb('+Math.round(c0.r+(c1.r-c0.r)*f)+','+Math.round(c0.g+(c1.g-c0.g)*f)+','+Math.round(c0.b+(c1.b-c0.b)*f)+')';
@@ -534,11 +541,11 @@ function renderSportHeatmap(sport,containerId){
   if(!races.length){el.innerHTML='<p style="color:#9CA3AF;font-size:11px;padding:12px 0">Select at least one race to display the heatmap.</p>';return;}
 
   var segments=[
-    {role:'Head Coach',gender:'Women',label:'Head Coach &#9792;',color:'#7C3AED',abbr:'HC'},
+    {role:'Head Coach',gender:'Women',label:'Head Coach &#9792;',color:'#2D4057',abbr:'HC'},
     {role:'Head Coach',gender:'Men',  label:'Head Coach &#9794;',color:'#A78BFA',abbr:'HC'},
-    {role:'Assistant Coach',gender:'Women',label:'Asst Coach &#9792;',color:'#06B6D4',abbr:'AC'},
+    {role:'Assistant Coach',gender:'Women',label:'Asst Coach &#9792;',color:'#4A6FA5',abbr:'AC'},
     {role:'Assistant Coach',gender:'Men',  label:'Asst Coach &#9794;',color:'#67E8F9',abbr:'AC'},
-    {role:'Student-Athlete',gender:'Women',label:'Athlete &#9792;',color:'#3B82F6',abbr:'ATH'}
+    {role:'Student-Athlete',gender:'Women',label:'Athlete &#9792;',color:'#AED9E0',abbr:'ATH'}
   ];
 
   // Build gap lookup: {race: head_asst_gap} at latest year for this sport
@@ -774,15 +781,15 @@ function buildKpis(sport,containerId){
   var curC=st.total_head!=null&&st.total_asst!=null?st.total_head+st.total_asst:null;
   var prevC=stP&&stP.total_head!=null&&stP.total_asst!=null?stP.total_head+stP.total_asst:null;
   el.innerHTML=
-    kpi(st.total_athletes?st.total_athletes.toLocaleString():'&#8212;','Total Athletes',String(yr),'#3B82F6',
+    kpi(st.total_athletes?st.total_athletes.toLocaleString():'&#8212;','Total Athletes',String(yr),'#AED9E0',
         dRow(st.total_athletes||null,stP?stP.total_athletes||null:null,function(a){return Math.round(a).toLocaleString()+' athletes';}))+
-    kpi(curC!=null?curC.toLocaleString():'&#8212;','Total Coaches','Head + Asst, '+String(yr),'#7C3AED',
+    kpi(curC!=null?curC.toLocaleString():'&#8212;','Total Coaches','Head + Asst, '+String(yr),'#2D4057',
         dRow(curC,prevC,function(a){return Math.round(a)+' coaches';}))+
     kpi(st.women_ratio!=null?+(st.women_ratio*100).toFixed(1)+'%':'&#8212;','Women Coaches','% of all coaches','#E88D67',
         dRow(st.women_ratio!=null?st.women_ratio*100:null,stP&&stP.women_ratio!=null?stP.women_ratio*100:null,function(a){return a.toFixed(1)+'pp';}))+
-    kpi(st.asst_head?st.asst_head.toFixed(2)+'x':'&#8212;','Asst-to-Head Ratio','Staff expansion index','#06B6D4',
+    kpi(st.asst_head?st.asst_head.toFixed(2)+'x':'&#8212;','Asst-to-Head Ratio','Staff expansion index','#4A6FA5',
         dRow(st.asst_head||null,stP?stP.asst_head||null:null,function(a){return a.toFixed(2)+'x';}))+
-    kpi(sdiA?sdiA.sdi.toFixed(3):'&#8212;','Athlete Diversity (SDI) <span class="info-icon" data-tip="Simpson Diversity Index (SDI)\n\nMeasures the probability that two randomly\nselected individuals belong to different\ndemographic groups.\n\nRange: 0 – 1\n\nHigher values = greater diversity">&#9432;</span>','Simpson Index, '+String(yr),'#3B82F6',
+    kpi(sdiA?sdiA.sdi.toFixed(3):'&#8212;','Athlete Diversity (SDI) <span class="info-icon" data-tip="Simpson Diversity Index (SDI)\n\nMeasures the probability that two randomly\nselected individuals belong to different\ndemographic groups.\n\nRange: 0 – 1\n\nHigher values = greater diversity">&#9432;</span>','Simpson Index, '+String(yr),'#AED9E0',
         dRow(sdiA?sdiA.sdi:null,sdiP?sdiP.sdi:null,function(a){return a.toFixed(3);}));
 }
 
