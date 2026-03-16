@@ -10,9 +10,9 @@ _This project is part of a broader [sports analytics portfolio](https://www.noti
 
 | Format | Link |
 |--------|------|
-| 🖥️ Interactive Dashboard | [Live Dashboard](https://kbsmd-sportsmusicdata.github.io/ncaa-d1-coaching-pipeline-dashboard/) |
-| 📊 Slide Deck | `docs/NCAA_D1_Coaching_Pipeline_Slides.pptx` |
-| 📄 Research Brief (v2) | `docs/NCAA_D1_Coaching_Pipeline_Research_Brief.pdf` |
+| 🖥️ HTML Dashboard | [Interactive Dashboard](https://kbsmd-sportsmusicdata.github.io/ncaa-d1-coaching-pipeline-dashboard/) |
+| 📊 Slide Deck | [In Repo /docs](docs/NCAA_D1_Coaching_Pipeline_Slides.pptx) |
+| 📄 Research Brief | [In Repo /docs](docs/NCAA_D1_Coaching_Pipeline_Research_Brief.pdf) |
 | 📌 Portfolio Write-Up | [Notion Page](https://www.notion.so/krystal-beasley/NCAA-D1-Demographics-231077fe20b881619a17c861854e4f08) |
 
 ---
@@ -35,7 +35,8 @@ The analysis is designed as a research-style tool for athletic departments, conf
 
   3. Uncomment and update the lines below:
 
-[WBB Dual-Line Chart](docs/screenshots/wbb_dual_line_chart.png)
+[WBB Dual-Line Chart](docs/screenshots/wbb_dual_line_chart.png) 
+/ https://github.com/kbsmd-sportsmusicdata/ncaa-d1-coaching-pipeline-dashboard/blob/main/docs/screenshots/volleyball_multi_line_chart.png
 [WBB Promotion Ladder](docs/screenshots/wbb_promotion_ladder.png)
 -->
 
@@ -172,8 +173,8 @@ ncaa-d1-coaching-pipeline-dashboard/
 │   └── analysis_pipeline.ipynb       # Analysis notebook
 │
 ├── docs/
-│   ├── NCAA_D1_Coaching_Pipeline_Slides.pptx
-│   ├── NCAA_D1_Coaching_Pipeline_Research_Brief.pdf
+│   ├── ncaa_d1_coaching_pipeline_slides.pptx
+│   ├── ncaa_d1_coaching_pipeline_research_brief.pdf
 │   └── screenshots/                  # Dashboard screenshots
 │
 └── NCAA_Pipeline_Infographic.png     # One-page portfolio/social infographic
