@@ -31,14 +31,11 @@ The analysis is designed as a research-style tool for athletic departments, conf
 
 ## Dashboard Preview
 
-![Dashboard Preview](dashboard-preview.png)
+![Dashboard Preview](docs/screenshots/dashboard_preview_demographics.png)
 
-  3. Uncomment and update the lines below:
+![Volleyball Line Chart](docs/screenshots/volleyball_multi_line_chart.png) 
 
-[WBB Dual-Line Chart](docs/screenshots/wbb_dual_line_chart.png) 
-/ https://github.com/kbsmd-sportsmusicdata/ncaa-d1-coaching-pipeline-dashboard/blob/main/docs/screenshots/volleyball_multi_line_chart.png
-[WBB Promotion Ladder](docs/screenshots/wbb_promotion_ladder.png)
--->
+![WBB Dashboard Heatmap Visual](docs/screenshots/wbb_heatmap_visual.png)
 
 ---
 
@@ -92,8 +89,8 @@ International athletes represent **~10% of WBB rosters** but less than **1% of c
 ### Pipeline Funnel
 Maps the three-stage structure — athletes → assistant coaches → head coaches — across all three sports. Visually illustrates where the pipeline narrows and where diversity is lost at each transition.
 
-### Dual-Line Chart: WBB Coach Counts Over Time *(est., WBB only)*
-Shows estimated WBB head coach and assistant coach counts from 2012–2025. The diverging lines make the bottleneck effect immediately visible: assistants rising steeply while head coaching positions remain nearly flat.
+### Dual-Line Chart: WBB Coach Counts Over Time
+Shows WBB head coach and assistant coach counts from 2012–2025. The diverging lines make the bottleneck effect immediately visible: assistants rising steeply while head coaching positions remain nearly flat.
 
 ### Promotion Ladder: Coach Representation by Race (Asst → Head)
 A grouped horizontal bar chart pairing assistant coach % and head coach % side-by-side for each racial group — making the Glass Clipboard promotion gap legible at a glance. Available for WBB, Softball, and Volleyball.
@@ -142,7 +139,7 @@ A grouped horizontal bar chart pairing assistant coach % and head coach % side-b
 
 ## Limitations
 
-The analysis relies on publicly reported NCAA demographic data and does not capture individual career pathways or coaching tenure. Coaching counts track *positions*, not unique individuals — staff who coach multiple sports may be counted more than once. Estimated WBB coach counts are derived from reported assistant-to-head ratios applied to known program counts. Future work could integrate longitudinal coach career tracking and institutional hiring patterns.
+The analysis relies on publicly reported NCAA demographic data and does not capture individual career pathways or coaching tenure. Coaching counts track *positions*, not unique individuals — staff who coach multiple sports may be counted more than once. Future work could integrate longitudinal coach career tracking, institutional hiring patterns and program initiative start/end dates.
 
 ---
 
@@ -164,7 +161,6 @@ ncaa-d1-coaching-pipeline-dashboard/
 │
 ├── index.html                        # Interactive dashboard
 ├── README.md                         # Project documentation
-├── dashboard-preview.png             # Dashboard screenshot for README
 │
 ├── data/
 │   └── ncaa_d1_womens_sports.parquet     # Processed dataset (14 years, 3 sports)
@@ -175,7 +171,7 @@ ncaa-d1-coaching-pipeline-dashboard/
 ├── docs/
 │   ├── ncaa_d1_coaching_pipeline_slides.pptx
 │   ├── ncaa_d1_coaching_pipeline_research_brief.pdf
-│   └── screenshots/                  # Dashboard screenshots
+│   └── screenshots/                  # Dashboard screenshots for README
 │
 └── NCAA_Pipeline_Infographic.png     # One-page portfolio/social infographic
 ```
