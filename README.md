@@ -1,6 +1,6 @@
 # NCAA D1 Coaching Pipeline & Demographic Analysis (2012–2025)
 
-Interactive sports analytics dashboard examining demographic representation and leadership pipelines across NCAA Division I coaching.
+Interactive sports analytics dashboard examining demographic representation and leadership pipelines across NCAA Division I student-athletes and coaching staff.
 
 _This project is part of a broader [sports analytics portfolio](https://www.notion.so/krystal-beasley/Sports-Analyst-Portfolio-231077fe20b880b381b7f9877bee2021) focused on leadership trends, competitive analytics, and data-driven decision tools in women's sports._
 
@@ -106,9 +106,9 @@ A grouped horizontal bar chart pairing assistant coach % and head coach % side-b
 
 | Sport | Athletes | Coaches |
 |-------|:--------:|:-------:|
-| Women's Basketball | 5,153 | 1,766 |
-| Softball | 6,956 | 1,040 |
-| Volleyball | 6,454 | 1,110 |
+| 🏀 Women's Basketball | 5,153 | 1,766 |
+| 🥎 Softball | 6,956 | 1,040 |
+| 🏐 Volleyball | 6,454 | 1,110 |
 | **Total** | **18,563** | **3,916** |
 
 ---
