@@ -11,8 +11,8 @@ _This project is part of a broader [sports analytics portfolio](https://www.noti
 | Format | Link |
 |--------|------|
 | 🖥️ HTML Dashboard | [Interactive Dashboard](https://kbsmd-sportsmusicdata.github.io/ncaa-d1-coaching-pipeline-dashboard/) |
-| 📊 Slide Deck | [In Repo /docs](docs/NCAA_D1_Coaching_Pipeline_Slides.pptx) |
-| 📄 Research Brief | [In Repo /docs](docs/NCAA_D1_Coaching_Pipeline_Research_Brief.pdf) |
+| 📊 Slide Deck | [In Repo /docs](docs/ncaa_d1_coaching_pipeline_slides.pptx) |
+| 📄 Research Brief | [In Repo /docs](docs/ncaa_d1_coaching_pipeline_research_brief.pdf) |
 | 📌 Portfolio Write-Up | [Notion Page](https://www.notion.so/krystal-beasley/NCAA-D1-Demographics-231077fe20b881619a17c861854e4f08) |
 
 ---
@@ -166,17 +166,14 @@ ncaa-d1-coaching-pipeline-dashboard/
 ├── data/
 │   └── ncaa_d1_womens_sports.parquet     # Processed dataset (14 years, 3 sports)
 │
-├── notebooks/
-│   └── analysis_pipeline.ipynb       # Analysis notebook
-│
 ├── docs/
 │   ├── ncaa_d1_coaching_pipeline_slides.pptx
 │   ├── ncaa_d1_coaching_pipeline_research_brief.pdf
 │   └── screenshots/                  # Dashboard screenshots for README
 │
-└── NCAA_Pipeline_Infographic.png     # One-page portfolio/social infographic
-```
-
+├── notebooks/
+│   └── analysis_pipeline.ipynb       # Analysis notebook```
+│   
 ---
 
 ## Potential Applications
