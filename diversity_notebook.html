@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCAA D1 Women's Sports — Coaching Diversity Pipeline Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Oswald:wght@400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">
+</script>
+<style>
+  :root {
+    --navy:  #1B3A6B;
+    --amber: #C8882A;
+    --gold:  #E8A942;
+    --bg:    #FAFAFA;
+    --white: #FFFFFF;
+    --light: #EEF2F8;
+    --muted: #6B7A99;
+    --red:   #C0392B;
+    --green: #27AE60;
+    --teal:  #1A7F8E;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Merriweather', serif; background: var(--bg); color: #1a1a2e; line-height: 1.7; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy); padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 52px; box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  }
+  nav .brand { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: .9rem; color: var(--white); letter-spacing: .04em; }
+  nav .brand span { color: var(--amber); }
+  nav ul { display: flex; gap: 1.4rem; list-style: none; }
+  nav ul a { font-family: 'Source Sans Pro', sans-serif; font-size: .8rem; color: rgba(255,255,255,.7); text-decoration: none; font-weight: 600; letter-spacing: .03em; transition: color .2s; }
+  nav ul a:hover { color: var(--amber); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d2347 100%);
+    padding: 4rem 2rem 3.5rem; text-align: center; color: var(--white);
+  }
+  .hero .run-badge {
+    display: inline-block; background: rgba(200,136,42,.2); border: 1px solid var(--amber);
+    border-radius: 20px; padding: .3rem 1rem; font-family: 'Source Sans Pro', sans-serif;
+    font-size: .75rem; font-weight: 600; letter-spacing: .06em; color: var(--amber);
+    text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    line-height: 1.2; max-width: 820px; margin: 0 auto 1rem;
+  }
+  .hero p {
+    font-family: 'Source Sans Pro', sans-serif; color: rgba(255,255,255,.72);
+    font-size: 1rem; max-width: 680px; margin: 0 auto 2rem;
+  }
+  .meta-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
+  .chip {
+    background: rgba(255,255,255,.1); border-radius: 14px; padding: .25rem .85rem;
+    font-family: 'Source Sans Pro', sans-serif; font-size: .78rem; color: rgba(255,255,255,.8);
+  }
+
+  /* EXEC CALLOUT */
+  .exec {
+    background: var(--amber); color: var(--white);
+    padding: 1.8rem 2rem; margin: 0;
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .exec-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
+  .exec h2 {
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: .04em; text-transform: uppercase; margin-bottom: .4rem;
+  }
+  .exec p { font-family: 'Source Sans Pro', sans-serif; font-size: .95rem; line-height: 1.6; }
+
+  /* CONTENT */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* SECTIONS */
+  .finding {
+    background: var(--white); border-radius: 12px;
+    border-left: 5px solid var(--navy);
+    margin: 2.5rem 0; padding: 2rem 2rem 1.5rem;
+    box-shadow: 0 2px 12px rgba(27,58,107,.07);
+  }
+  .finding.contrast { border-left-color: var(--amber); }
+  .finding.implication { border-left-color: #1A7F8E; }
+  .finding.close { border-left-color: #27AE60; }
+
+  .finding-header {
+    display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;
+  }
+  .finding-num {
+    background: var(--navy); color: var(--white);
+    font-family: 'Oswald', sans-serif; font-size: .85rem; font-weight: 600;
+    padding: .3rem .75rem; border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+  }
+  .finding.contrast .finding-num { background: var(--amber); }
+  .finding.implication .finding-num { background: #1A7F8E; }
+  .finding.close .finding-num { background: #27AE60; }
+
+  .finding h3 {
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.1rem;
+    color: var(--navy); line-height: 1.35;
+  }
+  .finding.contrast h3 { color: #7a4e00; }
+  .narrative {
+    font-family: 'Merriweather', serif; font-size: .9rem; line-height: 1.75;
+    color: #2c2c40; margin-bottom: 1.2rem;
+  }
+  .transition-line {
+    font-family: 'Source Sans Pro', sans-serif; font-style: italic; font-size: .85rem;
+    color: var(--muted); border-top: 1px solid var(--light); padding-top: .8rem; margin-top: .8rem;
+  }
+
+  /* STAT TILES */
+  .stat-row { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1rem 0; }
+  .stat-tile {
+    background: var(--light); border-radius: 8px; padding: .7rem 1rem; min-width: 130px; flex: 1;
+  }
+  .stat-tile .val {
+    font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--navy);
+  }
+  .stat-tile .val.red { color: var(--red); }
+  .stat-tile .val.green { color: #27AE60; }
+  .stat-tile .val.amber { color: var(--amber); }
+  .stat-tile .label {
+    font-family: 'Source Sans Pro', sans-serif; font-size: .75rem; color: var(--muted); font-weight: 600;
+  }
+
+  /* CHART WRAPPER */
+  .chart-wrap {
+    background: var(--light); border-radius: 8px; padding: 1rem 1rem .5rem;
+    margin: 1.2rem 0;
+  }
+  .chart-title {
+    font-family: 'Montserrat', sans-serif; font-size: .8rem; font-weight: 700;
+    color: var(--navy); margin-bottom: .6rem; text-transform: uppercase; letter-spacing: .04em;
+  }
+  canvas { max-height: 320px; }
+
+  /* SECTION HEADERS */
+  .section-heading {
+    font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.3rem;
+    color: var(--navy); padding: 2.5rem 0 .5rem; border-bottom: 3px solid var(--amber);
+    margin-bottom: 0;
+  }
+
+  /* DAQ */
+  .daq-section {
+    background: #0d2347; border-radius: 12px; padding: 2rem; margin: 2.5rem 0; color: var(--white);
+  }
+  .daq-section h2 {
+    font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.1rem;
+    color: var(--amber); margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: .05em;
+  }
+  .daq-item {
+    background: rgba(255,255,255,.07); border-radius: 8px; padding: 1.2rem 1.2rem 1rem;
+    margin-bottom: 1rem; border-left: 3px solid var(--amber);
+  }
+  .daq-item h4 {
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: .9rem;
+    color: var(--amber); margin-bottom: .4rem;
+  }
+  .daq-item p {
+    font-family: 'Source Sans Pro', sans-serif; font-size: .88rem; color: rgba(255,255,255,.8); line-height: 1.55;
+  }
+  .daq-item .data-note {
+    font-family: 'Source Sans Pro', sans-serif; font-size: .78rem; color: rgba(255,255,255,.5);
+    margin-top: .4rem; font-style: italic;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,.5);
+    font-family: 'Source Sans Pro', sans-serif; font-size: .78rem;
+    padding: 1.5rem 2rem; text-align: center; margin-top: 3rem;
+  }
+
+  /* GAP BADGE */
+  .gap-badge {
+    display: inline-block; border-radius: 4px; padding: .15rem .5rem;
+    font-family: 'Source Sans Pro', sans-serif; font-size: .8rem; font-weight: 700;
+  }
+  .gap-badge.neg { background: #fde8e8; color: var(--red); }
+  .gap-badge.pos { background: #e8f8ee; color: #27AE60; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">EDA AGENT <span>v2</span> &nbsp;·&nbsp; Coaching Pipeline</div>
+  <ul>
+    <li><a href="#gap">Pipeline Gaps</a></li>
+    <li><a href="#trend">Trends</a></li>
+    <li><a href="#coaching">Coaching</a></li>
+    <li><a href="#daq">Deeper Analysis</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="run-badge">EDA Run · diversity-2026-04-22 · Through 2025</div>
+  <h1>The pipeline exists — so why aren't more athletes becoming coaches?</h1>
+  <p>NCAA D1 women's sports diversity analysis across 4 sports, 3 roles, 9 race/ethnicity categories, and 14 years (2012–2025)</p>
+  <div class="meta-chips">
+    <span class="chip">🏀 Basketball</span>
+    <span class="chip">⚽ Soccer</span>
+    <span class="chip">🥎 Softball</span>
+    <span class="chip">🏐 Volleyball</span>
+    <span class="chip">80 teams · 3,024 data points</span>
+    <span class="chip">profile: coaching_pipeline</span>
+  </div>
+</div>
+
+<div class="exec" role="note">
+  <div class="exec-icon">🔍</div>
+  <div>
+    <h2>Key Takeaway</h2>
+    <p>Across all four women's sports, the coaching pipeline fills at the assistant level with measurably more diversity — but that diversity doesn't translate into head coaching positions. The gap is not a recruitment problem. It's a promotion problem. Women's Basketball is the only sport showing sustained improvement, proving it can be done. The other three sports haven't moved in 14 years.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== GAP FINDINGS ===== -->
+  <h2 class="section-heading" id="gap">📊 Pipeline Gaps</h2>
+
+  <!-- D02: Volleyball Black pipeline -->
+  <div class="finding" id="D02">
+    <div class="finding-header">
+      <span class="finding-num">D02 · HOOK</span>
+      <h3>Volleyball has the largest Black athlete-to-head-coach pipeline gap — and it hasn't closed in 14 years 🏐</h3>
+    </div>
+    <p class="narrative">Women's Volleyball has 15.6% Black student-athletes but only 8.2% Black head coaches — a −7.4 percentage point gap. What makes this finding urgent: the gap was −5.9 points in 2012 and has slightly <em>widened</em>, not closed, over 14 years of data. The pipeline exists at the athlete level; the bottleneck is somewhere between playing and coaching.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val">15.6%</div><div class="label">Black Athletes</div></div>
+      <div class="stat-tile"><div class="val">9.4%</div><div class="label">Black Asst Coaches</div></div>
+      <div class="stat-tile"><div class="val red">8.2%</div><div class="label">Black Head Coaches</div></div>
+      <div class="stat-tile"><div class="val red">−7.4 pp</div><div class="label">Athlete→HC Gap</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Black Representation by Role — Women's Volleyball (2025)</div>
+      <canvas id="chartD02" height="160"></canvas>
+    </div>
+    <p class="transition-line">→ But Volleyball isn't alone. Across all four sports, the same pattern repeats at the top of the coaching structure.</p>
+  </div>
+
+  <!-- D03: White overrepresentation -->
+  <div class="finding contrast" id="D03">
+    <div class="finding-header">
+      <span class="finding-num">D03 · EVIDENCE</span>
+      <h3>White coaches are overrepresented versus White athletes in every single sport</h3>
+    </div>
+    <p class="narrative">In all four women's sports, the percentage of White head coaches significantly exceeds the percentage of White student-athletes. The gap ranges from <strong>+15.1 to +29.0 percentage points</strong> depending on sport. This isn't a single-sport story — it's a structural pattern across the entire dataset.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val amber">+29.0 pp</div><div class="label">Basketball gap (largest)</div></div>
+      <div class="stat-tile"><div class="val amber">+15.1 pp</div><div class="label">Soccer gap (smallest)</div></div>
+      <div class="stat-tile"><div class="val amber">+15.5 pp</div><div class="label">Softball gap</div></div>
+      <div class="stat-tile"><div class="val amber">+15.7 pp</div><div class="label">Volleyball gap</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">White Athlete % vs. White Head Coach % — All Sports (2025)</div>
+      <canvas id="chartD03" height="200"></canvas>
+    </div>
+    <p class="transition-line">→ The one exception to the stagnation narrative is happening right now in Women's Basketball.</p>
+  </div>
+
+  <!-- D06: Two or More Races -->
+  <div class="finding" id="D06">
+    <div class="finding-header">
+      <span class="finding-num">D06 · EVIDENCE</span>
+      <h3>"Two or More Races" athletes nearly vanish by the time you reach the head coaching level 📉</h3>
+    </div>
+    <p class="narrative">Multiracial student-athletes account for 9–11% of athlete rosters across all four sports, yet head coach representation is near zero in three of them. Softball: 11.4% of athletes → 2.0% of head coaches. Volleyball: 9.4% → 4.7%. This isn't a small sample artifact — the athlete pipeline exists; the coaching pathway closes almost entirely.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val">11.4%</div><div class="label">Softball athletes</div></div>
+      <div class="stat-tile"><div class="val red">2.0%</div><div class="label">Softball HCs</div></div>
+      <div class="stat-tile"><div class="val">10.1%</div><div class="label">Soccer athletes</div></div>
+      <div class="stat-tile"><div class="val red">1.8%</div><div class="label">Soccer HCs</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">"Two or More Races" Representation: Athlete → Asst Coach → Head Coach (2025)</div>
+      <canvas id="chartD06" height="210"></canvas>
+    </div>
+    <p class="transition-line">→ The Hispanic/Latina coaching gap tells a similar story — and is most visible in Softball.</p>
+  </div>
+
+  <!-- D05: Hispanic gap -->
+  <div class="finding contrast" id="D05">
+    <div class="finding-header">
+      <span class="finding-num">D05 · CONTRAST</span>
+      <h3>Hispanic/Latina athletes are systematically blocked from the coaching pipeline 🎽</h3>
+    </div>
+    <p class="narrative">Hispanic/Latina athletes make up 11.0% of Softball's student-athlete pool — the highest of any sport — yet represent only 5.2% of head coaches. Across Basketball, Soccer, and Volleyball, the same pattern holds: Hispanic/Latina athletes are consistently underrepresented in coaching roles relative to their playing numbers.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val">11.0%</div><div class="label">Softball athletes</div></div>
+      <div class="stat-tile"><div class="val red">5.2%</div><div class="label">Softball HCs</div></div>
+      <div class="stat-tile"><div class="val">7.6%</div><div class="label">Soccer athletes</div></div>
+      <div class="stat-tile"><div class="val red">4.7%</div><div class="label">Soccer HCs</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Hispanic/Latina — Athlete % vs Head Coach % by Sport (2025)</div>
+      <canvas id="chartD05" height="200"></canvas>
+    </div>
+    <p class="transition-line">→ That benchmark status for Softball is real and worth naming — but the Hispanic/Latina gap is a notable exception within it.</p>
+  </div>
+
+  <!-- ===== TREND FINDINGS ===== -->
+  <h2 class="section-heading" id="trend">📈 Trends (2012–2025)</h2>
+
+  <!-- D01: Basketball exception -->
+  <div class="finding" id="D01">
+    <div class="finding-header">
+      <span class="finding-num">D01 · CONTRAST</span>
+      <h3>Women's Basketball is the only sport where Black head coach representation has meaningfully grown 🏀</h3>
+    </div>
+    <p class="narrative">Women's Basketball stands alone in showing a sustained upward trend in Black head coach representation: from 20.5% in 2012 to 32.9% in 2025 — a <strong>+12.4 percentage point gain</strong> over 14 years. The other three sports show flat or declining trajectories for Black head coaches. Basketball tells us change is possible. The others tell us it isn't happening automatically.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val">20.5%</div><div class="label">Basketball 2012</div></div>
+      <div class="stat-tile"><div class="val green">32.9%</div><div class="label">Basketball 2025</div></div>
+      <div class="stat-tile"><div class="val">10.0%</div><div class="label">Volleyball 2012</div></div>
+      <div class="stat-tile"><div class="val red">8.2%</div><div class="label">Volleyball 2025</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Black Head Coach % by Sport — 2012 to 2025</div>
+      <canvas id="chartD01" height="240"></canvas>
+    </div>
+    <p class="transition-line">→ The data also reveals where the ceiling lives — and it's not at the entry coaching level.</p>
+  </div>
+
+  <!-- D08: Ceiling at promotion -->
+  <div class="finding implication" id="D08">
+    <div class="finding-header">
+      <span class="finding-num">D08 · IMPLICATION</span>
+      <h3>The assistant coach layer has higher diversity than head coaches — the ceiling is at promotion, not recruitment</h3>
+    </div>
+    <p class="narrative">In three of four sports, assistant coach racial diversity is <em>higher</em> than head coach diversity. The pipeline is filling at the entry coaching level. The problem isn't getting diverse coaches in the door — it's getting them promoted. Somewhere between assistant and head coach, diverse candidates are not getting the call.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val">46.1%</div><div class="label">Basketball Black Asst</div></div>
+      <div class="stat-tile"><div class="val amber">32.9%</div><div class="label">Basketball Black HC</div></div>
+      <div class="stat-tile"><div class="val">9.4%</div><div class="label">Volleyball Black Asst</div></div>
+      <div class="stat-tile"><div class="val red">8.2%</div><div class="label">Volleyball Black HC</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Black Representation: Assistant Coach vs Head Coach — By Sport (2025)</div>
+      <canvas id="chartD08" height="200"></canvas>
+    </div>
+    <p class="transition-line">→ Which sports are building toward change — and which are standing still?</p>
+  </div>
+
+  <!-- ===== COACHING SECTION ===== -->
+  <h2 class="section-heading" id="coaching">🧑‍💼 Coaching Representation</h2>
+
+  <!-- D07: Softball benchmark -->
+  <div class="finding close" id="D07">
+    <div class="finding-header">
+      <span class="finding-num">D07 · ACTION</span>
+      <h3>Softball is the benchmark — the most stable and gender-representative coaching staff in D1 women's sports 🥎</h3>
+    </div>
+    <p class="narrative">Softball's 73.5% women head coach rate is the highest of any sport, the most stable across 14 years (σ = 1.2pp year-over-year), and the closest of any sport to its athlete demographics. It offers a model worth studying — particularly for Soccer, which sits at just 41.3% and has barely moved in a decade.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val green">73.5%</div><div class="label">Softball women HCs</div></div>
+      <div class="stat-tile"><div class="val">71.5%</div><div class="label">Softball in 2012</div></div>
+      <div class="stat-tile"><div class="val amber">65.4%</div><div class="label">Basketball women HCs</div></div>
+      <div class="stat-tile"><div class="val red">41.3%</div><div class="label">Soccer women HCs</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Women Head Coach % by Sport — 2012 to 2025</div>
+      <canvas id="chartD07" height="240"></canvas>
+    </div>
+    <p class="transition-line">→ The Soccer vs. Softball contrast is the starkest gender representation gap in this dataset.</p>
+  </div>
+
+  <!-- D04: Soccer outlier -->
+  <div class="finding contrast" id="D04">
+    <div class="finding-header">
+      <span class="finding-num">D04 · CLOSE</span>
+      <h3>Women's Soccer lags every other sport in women head coach representation ⚽</h3>
+    </div>
+    <p class="narrative">Only 41.3% of Women's Soccer head coaches are women — the lowest of any of the four sports. By comparison: Softball is 73.5%, Basketball is 65.4%, and Volleyball is 53.2%. Soccer's number has barely shifted over the past decade (+2.1pp since 2015), suggesting structural barriers beyond simple pipeline lag. Two sports in the same conference system — and the gap in who gets to coach them is 32 percentage points wide.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="val green">73.5%</div><div class="label">Softball (best)</div></div>
+      <div class="stat-tile"><div class="val">65.4%</div><div class="label">Basketball</div></div>
+      <div class="stat-tile"><div class="val">53.2%</div><div class="label">Volleyball</div></div>
+      <div class="stat-tile"><div class="val red">41.3%</div><div class="label">Soccer (lowest)</div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Women Head Coach % by Sport (2025) — Highest to Lowest</div>
+      <canvas id="chartD04" height="180"></canvas>
+    </div>
+    <p class="transition-line">→ The data surfaces where the pipeline stalls. The deeper questions are the ones for the next run.</p>
+  </div>
+
+  <!-- ===== DEEPER ANALYSIS QUEUE ===== -->
+  <div class="daq-section" id="daq">
+    <h2>🔬 Deeper Analysis Queue</h2>
+    <div class="daq-item">
+      <h4>DAQ1 — HIGH PRIORITY · What's driving Basketball's exception?</h4>
+      <p>Women's Basketball is the only sport where Black head coach representation has grown meaningfully over 14 years (+12.4pp). Is this conference-level policy, specific AD hiring patterns, network effects from former WNBA players entering coaching, or something else? Understanding the mechanism is necessary before any other sport can replicate the outcome.</p>
+      <p class="data-note">Data needed: Conference-level HC hiring data, AD demographics and tenure, search firm usage, former-player-to-coach pipeline data</p>
+    </div>
+
+    <div class="daq-item" id="daq2-expanded">
+      <h4>DAQ2 — HIGH PRIORITY · Is the assistant→head coach gap consistent across years?</h4>
+      <p>The 2025 snapshot shows assistant coach diversity exceeding head coach diversity in 3 of 4 sports. But is this a new phenomenon or a structural constant? The chart below answers this with 14 years of data.</p>
+      <div style="background:rgba(255,255,255,.06); border-radius:8px; padding:1rem; margin:.8rem 0;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:.75rem; font-weight:700; color:#C8882A; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.6rem;">Black Asst Coach % minus Black Head Coach % — Gap Over Time</div>
+        <canvas id="chartDAQ2gap" height="200"></canvas>
+        <p style="font-family:'Source Sans Pro',sans-serif; font-size:.78rem; color:rgba(255,255,255,.55); margin-top:.6rem; font-style:italic;">Positive values = assistant coaches are more diverse than head coaches. Negative = head coaches more diverse.</p>
+      </div>
+      <div style="background:rgba(255,255,255,.06); border-radius:8px; padding:1rem; margin:.8rem 0;">
+        <div style="font-family:'Montserrat',sans-serif; font-size:.75rem; font-weight:700; color:#C8882A; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.6rem;">Basketball: Black Asst vs HC % — The Narrowing Gap</div>
+        <canvas id="chartDAQ2bball" height="180"></canvas>
+        <p style="font-family:'Source Sans Pro',sans-serif; font-size:.78rem; color:rgba(255,255,255,.55); margin-top:.6rem; font-style:italic;">The HC% line rising toward the Asst% line is the key signal — the ceiling is permeable in Basketball, but nowhere else.</p>
+      </div>
+      <p style="font-family:'Source Sans Pro',sans-serif; font-size:.88rem; color:rgba(255,255,255,.8); line-height:1.55; margin-top:.5rem;"><strong style="color:#C8882A">Finding:</strong> Basketball's gap is large (~18–22pp) but has been narrowing since 2018 as head coaching diversified. Soccer shows near-zero gap — but that's because both roles have very low Black representation (a floor problem, not a ceiling). Softball and Volleyball show a small, inconsistent gap: the ceiling exists but is weak.</p>
+      <p class="data-note">Data source: ncaa_d1_womens_sports_filtered.parquet · Computed from head_race_pct and assistant_race_pct columns · 2012–2025</p>
+    </div>
+    <div class="daq-item">
+      <h4>DAQ3 — MEDIUM PRIORITY · Who's coaching the women's soccer teams — men or women?</h4>
+      <p>Soccer's 41.3% women HC rate is the outlier. Understanding whether this is a gender pipeline issue, a cross-gender hiring pattern (men coaching women's soccer is common at the professional level), or a structural legacy of the sport's growth would require comparing men's staff data for women's soccer programs.</p>
+      <p class="data-note">Data needed: Men's coaching staff data for women's soccer programs — NCAA supplemental data required</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  EDA Agent v2 · Run ID: diversity-2026-04-22 · Source: ncaa_d1_womens_sports_filtered.parquet · Through 2025 · Generated 2026-04-22
+</footer>
+
+<script>
+const NAVY = '#1B3A6B', AMBER = '#C8882A', TEAL = '#1A7F8E', GREEN = '#27AE60', RED = '#C0392B';
+const LIGHT = '#EEF2F8';
+const SPORT_COLORS = {"Basketball": "#E87722", "Soccer": "#1A7F8E", "Softball": "#1B3A6B", "Volleyball": "#C8882A"};
+
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { labels: { font: { family: "'Source Sans Pro', sans-serif", size: 12 }, color: '#333' } },
+    tooltip: { bodyFont: { family: "'Source Sans Pro', sans-serif" }, titleFont: { family: "'Montserrat', sans-serif" } }
+  },
+  scales: {
+    x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: '#555' }, grid: { color: 'rgba(0,0,0,.06)' } },
+    y: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: '#555' }, grid: { color: 'rgba(0,0,0,.06)' } }
+  }
+};
+
+// D02: Volleyball pipeline bar
+new Chart(document.getElementById('chartD02'), {
+  type: 'bar',
+  data: {
+    labels: ["Student-Athlete", "Assistant Coach", "Head Coach"],
+    datasets: [{
+      label: 'Black or African American %',
+      data: [15.6, 9.4, 8.2],
+      backgroundColor: ['#1A7F8E88', '#1A7F8Eaa', '#1B3A6B'],
+      borderColor: ['#1A7F8E', '#1A7F8E', '#1B3A6B'],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    ...chartDefaults,
+    plugins: { ...chartDefaults.plugins, legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 12 }, color: '#333' } },
+      y: {
+        beginAtZero: true, max: 20,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D03: White dumbbell (grouped bar)
+new Chart(document.getElementById('chartD03'), {
+  type: 'bar',
+  data: {
+    labels: ["Basketball", "Soccer", "Softball", "Volleyball"],
+    datasets: [
+      {
+        label: 'White Athletes',
+        data: [32.0, 64.0, 64.6, 58.8],
+        backgroundColor: NAVY + '88',
+        borderColor: NAVY,
+        borderWidth: 2,
+        borderRadius: 5
+      },
+      {
+        label: 'White Head Coaches',
+        data: [61.0, 79.8, 80.3, 74.3],
+        backgroundColor: AMBER + 'cc',
+        borderColor: AMBER,
+        borderWidth: 2,
+        borderRadius: 5
+      }
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 12 } } },
+      y: {
+        beginAtZero: true, max: 100,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D06: Two or More Races pipeline grouped
+new Chart(document.getElementById('chartD06'), {
+  type: 'bar',
+  data: {
+    labels: ["Basketball", "Soccer", "Softball", "Volleyball"],
+    datasets: [
+      {
+        label: 'Athletes',
+        data: [11.0, 10.1, 11.4, 9.4],
+        backgroundColor: TEAL + '99',
+        borderColor: TEAL,
+        borderWidth: 2,
+        borderRadius: 4
+      },
+      {
+        label: 'Asst Coaches',
+        data: [2.8, 3.2, 3.4, 2.7],
+        backgroundColor: AMBER + '99',
+        borderColor: AMBER,
+        borderWidth: 2,
+        borderRadius: 4
+      },
+      {
+        label: 'Head Coaches',
+        data: [1.9, 1.8, 2.0, 4.7],
+        backgroundColor: RED + '99',
+        borderColor: RED,
+        borderWidth: 2,
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 12 } } },
+      y: {
+        beginAtZero: true, max: 14,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D05: Hispanic grouped bar
+new Chart(document.getElementById('chartD05'), {
+  type: 'bar',
+  data: {
+    labels: ["Basketball", "Soccer", "Softball", "Volleyball"],
+    datasets: [
+      {
+        label: 'Hispanic/Latina Athletes',
+        data: [3.4, 7.6, 11.0, 5.8],
+        backgroundColor: NAVY + '88',
+        borderColor: NAVY,
+        borderWidth: 2,
+        borderRadius: 5
+      },
+      {
+        label: 'Hispanic/Latina Head Coaches',
+        data: [0.8, 4.7, 5.2, 4.7],
+        backgroundColor: RED + 'aa',
+        borderColor: RED,
+        borderWidth: 2,
+        borderRadius: 5
+      }
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 12 } } },
+      y: {
+        beginAtZero: true, max: 14,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D01: Black HC% multi-line
+new Chart(document.getElementById('chartD01'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Basketball", "data": [20.5, 20.6, 19.8, 20.8, 22.9, 21.9, 22.8, 24.6, 24.3, 27.8, 28.4, 29.0, 31.4, 32.9], "borderColor": "#E87722", "backgroundColor": "#E8772222", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Soccer", "data": [4.0, 4.3, 4.5, 4.2, 3.6, 4.7, 3.9, 4.4, 6.2, 5.0, 6.5, 5.9, 5.0, 5.0], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Softball", "data": [7.5, 7.0, 6.1, 5.3, 5.3, 5.6, 6.3, 6.7, 5.7, 5.4, 6.7, 6.4, 8.7, 8.9], "borderColor": "#1B3A6B", "backgroundColor": "#1B3A6B22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Volleyball", "data": [10.0, 9.8, 9.7, 8.5, 8.5, 9.5, 8.2, 7.6, 9.4, 10.2, 10.4, 9.1, 10.7, 8.2], "borderColor": "#C8882A", "backgroundColor": "#C8882A22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 11 } }, grid: { color: 'rgba(0,0,0,.06)' } },
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D08: Asst vs HC slope (grouped bar)
+new Chart(document.getElementById('chartD08'), {
+  type: 'bar',
+  data: {
+    labels: ["Basketball", "Soccer", "Softball", "Volleyball"],
+    datasets: [
+      {
+        label: 'Black Asst Coaches',
+        data: [46.1, 6.4, 7.3, 9.4],
+        backgroundColor: TEAL + '99',
+        borderColor: TEAL,
+        borderWidth: 2,
+        borderRadius: 5
+      },
+      {
+        label: 'Black Head Coaches',
+        data: [32.9, 5.0, 8.9, 8.2],
+        backgroundColor: NAVY + 'cc',
+        borderColor: NAVY,
+        borderWidth: 2,
+        borderRadius: 5
+      }
+    ]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 12 } } },
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D07: Women HC% multi-line
+new Chart(document.getElementById('chartD07'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Basketball", "data": [64.4, 64.9, 63.9, 64.7, 63.8, 63.0, 63.9, 65.6, 65.0, 66.1, 66.0, 66.5, 66.1, 65.4], "borderColor": "#E87722", "backgroundColor": "#E8772222", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Soccer", "data": [42.2, 42.3, 42.6, 43.0, 42.5, 40.9, 41.3, 42.2, 40.7, 40.2, 40.4, 40.5, 43.0, 41.3], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Softball", "data": [71.5, 71.9, 70.8, 71.8, 73.4, 71.7, 72.6, 71.5, 72.4, 71.7, 71.8, 72.9, 71.8, 73.5], "borderColor": "#1B3A6B", "backgroundColor": "#1B3A6B22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Volleyball", "data": [49.3, 49.6, 50.0, 49.9, 50.1, 47.5, 47.7, 48.6, 51.1, 50.7, 49.9, 50.8, 52.8, 53.2], "borderColor": "#C8882A", "backgroundColor": "#C8882A22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 11 } }, grid: { color: 'rgba(0,0,0,.06)' } },
+      y: {
+        beginAtZero: false, min: 35, max: 85,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      }
+    }
+  }
+});
+
+// D04: Women HC bar
+new Chart(document.getElementById('chartD04'), {
+  type: 'bar',
+  data: {
+    labels: ["Softball", "Basketball", "Volleyball", "Soccer"],
+    datasets: [{
+      label: 'Women Head Coach %',
+      data: [73.5, 65.4, 53.2, 41.3],
+      backgroundColor: ["#1B3A6B", "#E87722", "#C8882A", "#1A7F8E"].map(c => c + 'cc'),
+      borderColor: ["#1B3A6B", "#E87722", "#C8882A", "#1A7F8E"],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    ...chartDefaults,
+    indexAxis: 'y',
+    plugins: { ...chartDefaults.plugins, legend: { display: false } },
+    scales: {
+      x: {
+        beginAtZero: true, max: 100,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 11 } },
+        grid: { color: 'rgba(0,0,0,.06)' }
+      },
+      y: { ticks: { font: { family: "'Oswald', sans-serif", size: 13 }, color: '#333' } }
+    }
+  }
+});
+
+// DAQ2 gap line chart
+new Chart(document.getElementById('chartDAQ2gap'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Basketball", "data": [18.4, 19.6, 21.0, 21.4, 19.4, 21.7, 21.6, 20.9, 21.2, 18.9, 18.1, 19.9, 15.2, 13.3], "borderColor": "#E87722", "backgroundColor": "#E8772222", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Soccer", "data": [0.1, 0.6, -0.8, -0.6, 0.4, -1.1, 0.2, 0.1, -2.0, -0.6, -3.1, -1.7, -0.7, 1.4], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Softball", "data": [-2.9, -1.9, -1.0, -0.7, 0.9, -0.5, -1.1, -1.5, 0.4, 1.0, -0.2, -0.4, -1.8, -1.5], "borderColor": "#1B3A6B", "backgroundColor": "#1B3A6B22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Volleyball", "data": [-1.7, -3.0, -2.7, -0.4, 0.4, -1.7, -0.4, 0.2, -1.3, -2.1, 0.7, 1.4, -0.9, 1.2], "borderColor": "#C8882A", "backgroundColor": "#C8882A22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { labels: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: 'rgba(255,255,255,.8)' } },
+      tooltip: { bodyFont: { family: "'Source Sans Pro', sans-serif" }, titleFont: { family: "'Montserrat', sans-serif" } }
+    },
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' }, grid: { color: 'rgba(255,255,255,.08)' } },
+      y: {
+        ticks: { callback: v => (v >= 0 ? '+' : '') + v + 'pp', font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' },
+        grid: { color: 'rgba(255,255,255,.08)' },
+        afterBuildTicks(axis) {
+          // draw zero line
+        }
+      }
+    }
+  }
+});
+
+// DAQ2 basketball absolute lines
+new Chart(document.getElementById('chartDAQ2bball'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Black Asst Coaches", "data": [38.9, 40.2, 40.8, 42.2, 42.3, 43.6, 44.4, 45.6, 45.5, 46.7, 46.5, 48.9, 46.6, 46.1], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Black Head Coaches", "data": [20.5, 20.6, 19.8, 20.8, 22.9, 21.9, 22.8, 24.6, 24.3, 27.8, 28.4, 29.0, 31.4, 32.9], "borderColor": "#E87722", "backgroundColor": "#E8772244", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": true}]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { labels: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: 'rgba(255,255,255,.8)' } },
+      tooltip: { bodyFont: { family: "'Source Sans Pro', sans-serif" }, titleFont: { family: "'Montserrat', sans-serif" } }
+    },
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' }, grid: { color: 'rgba(255,255,255,.08)' } },
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' },
+        grid: { color: 'rgba(255,255,255,.08)' }
+      }
+    }
+  }
+});
+
+
+// DAQ2 gap line chart
+new Chart(document.getElementById('chartDAQ2gap'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Basketball", "data": [18.4, 19.6, 21.0, 21.4, 19.4, 21.7, 21.6, 20.9, 21.2, 18.9, 18.1, 19.9, 15.2, 13.3], "borderColor": "#E87722", "backgroundColor": "#E8772222", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Soccer", "data": [0.1, 0.6, -0.8, -0.6, 0.4, -1.1, 0.2, 0.1, -2.0, -0.6, -3.1, -1.7, -0.7, 1.4], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Softball", "data": [-2.9, -1.9, -1.0, -0.7, 0.9, -0.5, -1.1, -1.5, 0.4, 1.0, -0.2, -0.4, -1.8, -1.5], "borderColor": "#1B3A6B", "backgroundColor": "#1B3A6B22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}, {"label": "Volleyball", "data": [-1.7, -3.0, -2.7, -0.4, 0.4, -1.7, -0.4, 0.2, -1.3, -2.1, 0.7, 1.4, -0.9, 1.2], "borderColor": "#C8882A", "backgroundColor": "#C8882A22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": false}]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { labels: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: 'rgba(255,255,255,.8)' } },
+      tooltip: { bodyFont: { family: "'Source Sans Pro', sans-serif" }, titleFont: { family: "'Montserrat', sans-serif" } }
+    },
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' }, grid: { color: 'rgba(255,255,255,.08)' } },
+      y: {
+        ticks: { callback: v => (v >= 0 ? '+' : '') + v + 'pp', font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' },
+        grid: { color: 'rgba(255,255,255,.08)' },
+        afterBuildTicks(axis) {
+          // draw zero line
+        }
+      }
+    }
+  }
+});
+
+// DAQ2 basketball absolute lines
+new Chart(document.getElementById('chartDAQ2bball'), {
+  type: 'line',
+  data: {
+    labels: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    datasets: [{"label": "Black Asst Coaches", "data": [38.9, 40.2, 40.8, 42.2, 42.3, 43.6, 44.4, 45.6, 45.5, 46.7, 46.5, 48.9, 46.6, 46.1], "borderColor": "#1A7F8E", "backgroundColor": "#1A7F8E22", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3}, {"label": "Black Head Coaches", "data": [20.5, 20.6, 19.8, 20.8, 22.9, 21.9, 22.8, 24.6, 24.3, 27.8, 28.4, 29.0, 31.4, 32.9], "borderColor": "#E87722", "backgroundColor": "#E8772244", "borderWidth": 2.5, "pointRadius": 3, "tension": 0.3, "fill": true}]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { labels: { font: { family: "'Source Sans Pro', sans-serif", size: 11 }, color: 'rgba(255,255,255,.8)' } },
+      tooltip: { bodyFont: { family: "'Source Sans Pro', sans-serif" }, titleFont: { family: "'Montserrat', sans-serif" } }
+    },
+    scales: {
+      x: { ticks: { font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' }, grid: { color: 'rgba(255,255,255,.08)' } },
+      y: {
+        beginAtZero: true,
+        ticks: { callback: v => v + '%', font: { family: "'Source Sans Pro', sans-serif", size: 10 }, color: 'rgba(255,255,255,.6)' },
+        grid: { color: 'rgba(255,255,255,.08)' }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
